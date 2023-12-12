@@ -14,27 +14,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function getWeatherData(city) {
-        // Use OpenWeatherMap API to get weather data
         fetch(`${apiUrl}weather?q=${city}&appid=${apiKey}`)
             .then(response => response.json())
             .then(data => {
-                // Display current weather information
                 displayCurrentWeather(data);
-                // Save search history
                 saveToHistory(city);
-                // Fetch 5-day forecast
                 return fetch(`${apiUrl}forecast?q=${city}&appid=${apiKey}`);
             })
             .then(response => response.json())
             .then(data => {
-                // Display 5-day forecast
                 displayForecast(data);
             })
             .catch(error => console.error('Error fetching data:', error));
     }
 
     function displayCurrentWeather(data) {
-        // Display current weather information
         currentWeather.innerHTML = `
             <h2>${data.name} (${new Date().toLocaleDateString()})</h2>
             <p>Temperature: ${data.main.temp}°C</p>
@@ -44,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayForecast(data) {
-        // Display 5-day forecast
         forecast.innerHTML = '<h2>5-Day Forecast</h2>';
         for (let i = 0; i < data.list.length; i += 8) {
             const forecastItem = data.list[i];
@@ -61,11 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function saveToHistory(city) {
-        // Save search history and display it
         const historyItem = document.createElement('li');
         historyItem.textContent = city;
         historyItem.addEventListener('click', function () {
-            // When clicked on a city in the search history, fetch data again
             getWeatherData(city);
         });
 
